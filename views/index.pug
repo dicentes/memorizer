@@ -20,6 +20,7 @@ div(class="container")
   div(class="row")
     div(class="col-sm")
       h2 Your currently selected verse is from #{booktitle}. 
+      h2 Chapter 1, Verse #{verseposition}
       p(id="text1")  
       p(id="text2")
       h2(id="text3" class="bg-secondary text-white")
@@ -46,6 +47,10 @@ script.
     $("#currentverse").hide();
     var values2 =  parseInt(versesum);
     var counter = 0;
+    $('#verse').append($(document.createElement('option')).prop({
+                value: "Select verse",
+                text: "Select verse",
+            }))
     while (counter < values2) {
          $('#verse').append($(document.createElement('option')).prop({
                 value: counter,
@@ -104,10 +109,11 @@ script.
             //THIS IS NOT WORKING - THE IF LOOP RUNS REGARDLESS OF WHETHER OR NOT THE BOX IS CHECKED???
             if($("#accept").prop("checked") == true){
               console.log("now the AJAX call will run");
-              var verseselection = 10
+              // localStorage.input = $("#accept").is(':checked'); // this doesn't work yet, but we want to keep the box checked after reload 
+              var verseselection = 0;
               $.ajax({
                 url: "",
-                data: {verse1: verseselection},
+                data: {verse1: verseselection, automove: "yes"}, 
                 type: "POST",
                 //contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -118,7 +124,7 @@ script.
                     console.log("Something went wrong.");
                 },
                 success: function (response) {
-                    console.log("now the user would reload page!");
+                    location.reload(true); //it may be possible to make this just one div? 
                 }
               })
             } else {
@@ -134,7 +140,7 @@ script.
       //$.post("",{ verse1: verseselection});
      $.ajax({
         url: "",
-        data: { verse1: verseselection},
+        data: { verse1: verseselection, automove: "no"},
         type: "POST",
         //contentType: "application/json; charset=utf-8",
         dataType: "json",
