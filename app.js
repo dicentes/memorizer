@@ -21,12 +21,35 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 //testing out mongoose stuff - node is successfully connecting to the database for the time being 
+//setting this up so I can just write "Schema" every time
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to Mongoose'))
+//experimenting with writing to database at all
+const schema = mongoose.Schema
+const userSchema = schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+});
+const UserModel = mongoose.model('Users', userSchema);
+//this finds information from the users collection, but I really have no idea how it works 
 
+
+
+
+//
 // 
 const initializePassport = require('./passport-config')
 initializePassport(
@@ -74,6 +97,15 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       email: req.body.email,
       password: hashedPassword
     })
+    UserModel.create({name: req.body.name, email:req.body.email, password:hashedPassword}, function(err, users){
+      if (err){
+        console.log(err)
+      } else {
+        console.log("New model implemented in users")
+      }
+    });
+     //THIS WOULD RUN A FAKE FUNCTION - but we want it to run a real record 
+    //NOW WE WANT TO TAKE THE USERS ARRAY AND USE IT TO CREATE A NEW MODEL 
     res.redirect('/login')
     console.log("User successfully registered.")
   } catch {
