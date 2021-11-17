@@ -11,12 +11,10 @@ html(language=en)
 
 body 
 
-  
-p 
-  h2  Welcome to Bible Memorizer, #{user}!
 
-
-div(class="container")
+div(class="container" id="container")
+  p  
+    h2 Welcome to Bible Memorizer, #{user}!
   div(class="row")
     div(class="col-sm")
       h2 Your currently selected verse is from #{booktitle}. 
@@ -38,20 +36,20 @@ p
   
   
 script let versesum = #{versecount}
+script let currentverseposition = #{verseposition}
 
 
 
 script.
   $(document).ready(function(){
     //trying to create dynamic options here,  this works somehow?
-    $("#currentverse").hide();
-    var values2 =  parseInt(versesum);
+    //$("#currentverse").hide();
     var counter = 0;
     $('#verse').append($(document.createElement('option')).prop({
                 value: "Select verse",
                 text: "Select verse",
             }))
-    while (counter < values2) {
+    while (counter < versesum) {
          $('#verse').append($(document.createElement('option')).prop({
                 value: counter,
                 text: counter
@@ -95,7 +93,7 @@ script.
           //this turns the user guess into a clean lowercase answer, in case they put in a period it also removes that 
           var UserGuess = $("#answerfield").val().replace(".","").toLowerCase();
           //add in a step to remove any punctuation from correctanswer 
-          var finalanswer = correctanswer.toString().replace(".","").toLowerCase();
+          var finalanswer = correctanswer.toString().replace(".","").replace(",","").toLowerCase();
           var guesscount = 0;
           //i'd like to add in a way to ignore lowercase or uppercase
           if (UserGuess != finalanswer) {
@@ -105,12 +103,13 @@ script.
           } else {
             $("#text4").text("Correct.");
             $("#text4").css({ 'color': 'green', 'font-size': '150%' })
+            
             //IF the user has the checkbox selected, automatically move them to the next verse (copy most of the aJAX call from below)
             //THIS IS NOT WORKING - THE IF LOOP RUNS REGARDLESS OF WHETHER OR NOT THE BOX IS CHECKED???
             if($("#accept").prop("checked") == true){
               console.log("now the AJAX call will run");
               // localStorage.input = $("#accept").is(':checked'); // this doesn't work yet, but we want to keep the box checked after reload 
-              var verseselection = 0;
+              var verseselection = currentverseposition + 1;
               $.ajax({
                 url: "",
                 data: {verse1: verseselection, automove: "yes"}, 
@@ -152,6 +151,8 @@ script.
         },
         success: function (response) {
             location.reload(true);
+            //$( "#container" ).load(window.location.href + " #container" );
+            
         }
       })
     });
