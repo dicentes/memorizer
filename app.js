@@ -14,19 +14,27 @@ const { request } = require("http");
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override') 
+const mongoose = require('mongoose');
 app.use(express.urlencoded({ extended: true })); 
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'))
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
+//testing out mongoose stuff - node is successfully connecting to the database for the time being 
 
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+const db = mongoose.connection
+db.on('error', error => console.error(error))
+db.once('open', () => console.log('Connected to Mongoose'))
+
+// 
 const initializePassport = require('./passport-config')
 initializePassport(
   passport,
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
-
+//eventually this user information will be put into mongodb, but for now it's just in "users"
 const users = []
 
 app.use(flash())
