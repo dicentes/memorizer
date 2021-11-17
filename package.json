@@ -13,8 +13,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.2",
     "jquery": "^3.6.0",
+    "method-override": "^3.0.0",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0",
     "pug": "^3.0.2"
   },
   "devDependencies": {

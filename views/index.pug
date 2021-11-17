@@ -34,7 +34,12 @@ div(class="container" id="container")
 p 
   h2(id="currentverse") #{currentverse}
   
-  
+h1 Hi #{name}
+form(action="/logout?_method=DELETE" method="POST")
+  button(type="submit") Log Out
+
+
+
 script let versesum = #{versecount}
 script let currentverseposition = #{verseposition}
 

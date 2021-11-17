@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title= title
+    body 
+    if messages.error  
+        p #{messages.error}
+    form(action="/login" method="POST")
+        div
+            label(for = "name") Name
+            input(type="text" id="name" name="name" required)
+        div
+            label(for = "email") Email
+            input(type="email" id="email" name="email" required)
+        div
+            label(for = "password") Password
+            input(type="password" id="password" name="password" required)
+        button(type="submit") Login
+
+    a(href="/register") Register
